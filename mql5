@@ -1,0 +1,79 @@
+
+// FTMO Trading Bot
+// Developer: Forex Robot Easy Team
+// Developer's Site: forexroboteasy.com
+
+// Define the currency pairs to be traded
+string symbol1 = 'EURUSD';
+string symbol2 = 'GBPUSD';
+
+// Define the timeframe
+ENUM_TIMEFRAMES timeframe = PERIOD_M30;
+
+// Define the lot size
+double lotSize = 0.01;
+
+// Define the risk management parameters
+double maxLossPercentage = 0.02; // Maximum allowed loss percentage
+double maxLotSize = 0.05; // Maximum lot size allowed
+
+// Define the price action and SMA strategy
+bool isPriceActionStrong = false;
+bool isSmaStrong = false;
+
+// Function to modify the lot size
+void ModifyLotSize(double newLotSize)
+{
+    if (newLotSize > 0 && newLotSize <= maxLotSize)
+    {
+        lotSize = newLotSize;
+    }
+}
+
+// Function to check if the risk is within acceptable limits
+bool IsRiskWithinLimits()
+{
+    double accountEquity = AccountInfoDouble(ACCOUNT_EQUITY);
+    double maxLossAmount = accountEquity * maxLossPercentage;
+
+    double potentialLoss = 0;
+    if (isPriceActionStrong && isSmaStrong)
+    {
+        potentialLoss = (SymbolInfoDouble(symbol1, SYMBOL_BID) - SymbolInfoDouble(symbol1, SYMBOL_ASK)) * lotSize;
+    }
+
+    return potentialLoss <= maxLossAmount;
+}
+
+// Main execution function
+void OnTick()
+{
+    // Check if risk is within acceptable limits
+    if (!IsRiskWithinLimits())
+    {
+        // Implement risk management measures to protect equity
+        // ...
+    }
+    
+    // Implement trading strategy based on price action and SMA strength
+    // ...
+    
+    // Place orders and manage trades
+    // ...
+}
+
+// Program entry point
+int OnInit()
+{
+    // Initialization tasks
+    // ...
+    
+    return(INIT_SUCCEEDED);
+}
+
+// Program termination point
+void OnDeinit(const int reason)
+{
+    // Cleanup tasks
+    // ...
+}
